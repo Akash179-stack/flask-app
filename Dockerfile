@@ -1,24 +1,27 @@
-# Base image (OS)
-
-FROM python:3.14-slim
-
-# Working directory
+FROM python:3.14-slim AS builder
 
 WORKDIR /app
 
-# Copy src code to container
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt --target /app/libraries
 
 COPY . .
 
-# Run the build commands
+FROM gcr.io/distroless/python3-debian12 AS production
 
-RUN pip install -r requirements.txt
+WORKDIR /app
 
-# expose port 80
+COPY --from=builder /app/libraries /app/libraries
+
+COPY --from=builder /app .
+
+ENV PYTHONPATH="/app/libraries"
 
 EXPOSE 80
 
-# serve the app / run the app (keep it running)
+CMD ["run.py"]
 
-CMD ["python","run.py"]
+
+ 
 
