@@ -1,0 +1,28 @@
+name: docker_hub
+
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+        
+      - name: login to dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{vars.DOCKERHUB_USER}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
+      - name: bulid & push on dockerhub
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: |
+            ${{vars.DOCKERHUB_USER}}/github-action-app:${{ github.ref_name }}
+            ${{vars.DOCKERHUB_USER}}/github-action-app:${{ github.sha }}
+            ${{vars.DOCKERHUB_USER}}/github-action-app:latest
+          
