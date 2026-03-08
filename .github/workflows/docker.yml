@@ -22,7 +22,7 @@ jobs:
         with:
           push: true
           tags: |
-            ${{vars.DOCKERHUB_USER}}/github-action-app:${{ github.ref_name }}
-            ${{vars.DOCKERHUB_USER}}/github-action-app:${{ github.sha }}
-            ${{vars.DOCKERHUB_USER}}/github-action-app:latest
+            ${{vars.DOCKERHUB_USERNAME}}/github-action-app:${{ github.ref_name }}
+            ${{vars.DOCKERHUB_USERNAME}}/github-action-app:${{ github.sha }}
+            ${{vars.DOCKERHUB_USERNAME}}/github-action-app:latest
           
